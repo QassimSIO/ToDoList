@@ -13,6 +13,6 @@ public class Moldu extends Proprietaires {
 	
 	@Override
 	public String infoMessage(String prenom,String nom, String statut ) {
-		return "Statut : "+ statut + " "+ prenom + "" + nom ;
+		return "Statut : "+ statut + " "+ prenom + "" + nom;
 	}
 }

@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import Controleur.Controle;
+import Modele.Proprietaires;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -28,6 +29,7 @@ import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class frmToDoList extends JFrame {
@@ -41,6 +43,8 @@ public class frmToDoList extends JFrame {
 	private JTextField txtPrenom;
 	private JTextField txtStatut;
 	private Controle controle;
+	
+	JComboBox <Proprietaires>cbbProprietaire;
 
 	
 	/*public static void main(String[] args) {
@@ -58,9 +62,22 @@ public class frmToDoList extends JFrame {
 	
 	
 	/***
-	 * Methode pour creer un membres(proprietaires)
+	 * Clique sur le bouton nouveau et ajout dan le tableau proprietaire et le combo box 
 	 */
+	public void cliqueBtnNouveau() {
+		controle.creeMembre(txtNom.getText(), txtPrenom.getText(), txtStatut.getText());
+		txtNom.setText("");
+		txtPrenom.setText("");
+		txtStatut.setText("");
+				
+	}
 	
+	public void majCbbProprietaire(ArrayList<Proprietaires> lesProprietaires) {
+		cbbProprietaire.removeAllItems(); //suppr tout dans le combobox
+		for(Proprietaires p : lesProprietaires) {
+			cbbProprietaire.addItem(p);//rajoute le contenu du tableau
+		}
+	}
 	
 	
 
@@ -98,7 +115,7 @@ public class frmToDoList extends JFrame {
 		contentPane.add(txtTitre);
 		txtTitre.setColumns(10);
 		
-		JComboBox cbbProprietaire = new JComboBox();
+		cbbProprietaire = new JComboBox();
 		cbbProprietaire.setBounds(142, 51, 231, 22);
 		contentPane.add(cbbProprietaire);
 		
@@ -207,6 +224,7 @@ public class frmToDoList extends JFrame {
 		JButton btnCreer = new JButton("Nouveau");
 		btnCreer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cliqueBtnNouveau();
 			}
 		});
 		btnCreer.setBounds(537, 125, 89, 23);

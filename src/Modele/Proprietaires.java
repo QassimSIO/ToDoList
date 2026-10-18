@@ -31,6 +31,11 @@ public abstract class Proprietaires {
 	public String getLeSort() {
 		return leSort;
 	}
+	
+	@Override
+	public String toString() {
+		return nom + " "+ prenom ;
+	}
 
 	public abstract String infoMessage(String prenom,String nom, String statut );
 
