@@ -9,6 +9,9 @@ import javax.swing.border.EmptyBorder;
 
 import Controleur.Controle;
 import Modele.Proprietaires;
+import Modele.Sorcier;
+import Modele.Taches;
+import Modele.Urgence;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -25,26 +28,34 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
 import java.awt.Color;
+import java.awt.Component;
+
 import javax.swing.JTable;
 import javax.swing.JTextPane;
 import javax.swing.JTextArea;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.DefaultListModel;
+import javax.swing.JSlider;
 
 public class frmToDoList extends JFrame {
 
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtTitre;
-	private JTextField txtDatePublication;
 	private JTextField txtDateExpiration;
 	private JTextField txtNom;
 	private JTextField txtPrenom;
 	private JTextField txtStatut;
 	private Controle controle;
+	private JComboBox <Proprietaires> cbbProprietaire;
+	private JComboBox<Urgence> cbbUrgence;
 	
-	JComboBox <Proprietaires>cbbProprietaire;
+	private JButton btnAjouter;
+	private DefaultListModel<Taches> modeleTachesAFaire = new DefaultListModel<>();
+	private JList<Taches> lstTachesAFaire;
 
 	
 	/*public static void main(String[] args) {
@@ -60,6 +71,27 @@ public class frmToDoList extends JFrame {
 		});
 	}*/
 	
+	/***
+	 * Clique sur le bouton ajouter 
+	 */
+	public void cliqueBtnAjouter() {
+		controle.creeTaches(txtTitre.getText(),(Proprietaires)cbbProprietaire.getSelectedItem(), txtDateExpiration.getText(), (Urgence)cbbUrgence.getSelectedItem());
+		txtTitre.setText("");
+		txtDateExpiration.setText("");
+	}
+	
+	/**
+	 * 
+	 * 
+	 * @param lesTaches
+	 */
+	public void majlstTachesAFaire(ArrayList<Taches> lesTaches) {
+	    modeleTachesAFaire.clear();
+	    for (Taches t : lesTaches) {
+	        modeleTachesAFaire.addElement(t);
+	    }
+	}
+	
 	
 	/***
 	 * Clique sur le bouton nouveau et ajout dan le tableau proprietaire et le combo box 
@@ -72,12 +104,31 @@ public class frmToDoList extends JFrame {
 				
 	}
 	
+	/***
+	 * methode mise a jours du comboBox
+	 * @param lesProprietaires
+	 */
 	public void majCbbProprietaire(ArrayList<Proprietaires> lesProprietaires) {
 		cbbProprietaire.removeAllItems(); //suppr tout dans le combobox
 		for(Proprietaires p : lesProprietaires) {
+			
 			cbbProprietaire.addItem(p);//rajoute le contenu du tableau
 		}
 	}
+	
+	/*
+	/**
+	 * 
+	 * @param lesNivUrgence
+	 
+	public void RempCbbUrgence( ArrayList <Urgence> lesNivUrgence) {
+		for(Urgence p : lesNivUrgence) {
+			
+			cbbUrgence.addItem(p);//rajoute le contenu du tableau
+		}
+	}
+	*/
+	
 	
 	
 
@@ -85,9 +136,10 @@ public class frmToDoList extends JFrame {
 	 * Create the frame.
 	 */
 	public frmToDoList(Controle controle) {
+		
 		this.controle=controle;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 892, 636);
+		setBounds(100, 100, 579, 636);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -101,39 +153,52 @@ public class frmToDoList extends JFrame {
 		lblNewLabel.setBounds(10, 59, 90, 14);
 		contentPane.add(lblNewLabel);
 		
-		JLabel lblNewLabel_1 = new JLabel("Date de publication :");
-		lblNewLabel_1.setBounds(10, 84, 109, 14);
-		contentPane.add(lblNewLabel_1);
-		
 		JLabel lblNewLabel_2 = new JLabel("Date d'expiration :");
-		lblNewLabel_2.setBounds(10, 109, 109, 14);
+		lblNewLabel_2.setBounds(10, 90, 109, 14);
 		contentPane.add(lblNewLabel_2);
 		
 		txtTitre = new JTextField();
-		txtTitre.setHorizontalAlignment(SwingConstants.RIGHT);
+		txtTitre.setHorizontalAlignment(SwingConstants.LEFT);
 		txtTitre.setBounds(142, 25, 231, 20);
 		contentPane.add(txtTitre);
 		txtTitre.setColumns(10);
 		
-		cbbProprietaire = new JComboBox();
+		cbbProprietaire = new JComboBox<Proprietaires>();
 		cbbProprietaire.setBounds(142, 51, 231, 22);
 		contentPane.add(cbbProprietaire);
+		cbbProprietaire.setRenderer(new DefaultListCellRenderer() {
+		     @Override
+		      public Component getListCellRendererComponent(JList<?> list, Object value,
+		              int index, boolean isSelected, boolean cellHasFocus) {
 		
-		txtDatePublication = new JTextField();
-		txtDatePublication.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtDatePublication.setBounds(142, 81, 231, 20);
-		contentPane.add(txtDatePublication);
-		txtDatePublication.setColumns(10);
+		         Component c = super.getListCellRendererComponent(list, value, index,
+		                   isSelected, cellHasFocus);
+	
+		          
+		              if (value instanceof Sorcier) {
+		                  c.setForeground(Color.BLUE);
+		              } else {
+		                 c.setForeground(Color.RED);
+		             
+		         }
+		         return c;
+		     }
+		  });
+		
+		cbbUrgence = new JComboBox<Urgence>(Urgence.values());
+		cbbUrgence.setBounds(142, 115, 231, 22);
+		contentPane.add(cbbUrgence);
 		
 		txtDateExpiration = new JTextField();
-		txtDateExpiration.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtDateExpiration.setBounds(142, 106, 231, 20);
+		txtDateExpiration.setHorizontalAlignment(SwingConstants.LEFT);
+		txtDateExpiration.setBounds(142, 84, 231, 20);
 		contentPane.add(txtDateExpiration);
 		txtDateExpiration.setColumns(10);
 		
-		JList lstTachesAFaire = new JList();
-		lstTachesAFaire.setBounds(10, 220, 400, 332);
-		contentPane.add(lstTachesAFaire);
+		lstTachesAFaire = new JList<Taches>(modeleTachesAFaire);
+		JScrollPane scrollAFaire = new JScrollPane(lstTachesAFaire);
+		scrollAFaire.setBounds(10, 220, 400, 332);
+		contentPane.add(scrollAFaire);
 		
 		JButton btnSupprTachesAFaire = new JButton("Supprimer");
 		btnSupprTachesAFaire.setBounds(10, 563, 89, 23);
@@ -144,80 +209,58 @@ public class frmToDoList extends JFrame {
 		contentPane.add(btnModifTachesAFaire);
 		
 		JLabel lblNewLabel_5 = new JLabel("Urgence :");
-		lblNewLabel_5.setBounds(10, 134, 60, 14);
+		lblNewLabel_5.setBounds(10, 115, 60, 14);
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnViderTachesAFaire = new JButton("Vider");
 		btnViderTachesAFaire.setBounds(204, 563, 89, 23);
 		contentPane.add(btnViderTachesAFaire);
 		
-		JRadioButton rdbtnPasUrgent = new JRadioButton("Pas urgent");
-		rdbtnPasUrgent.setForeground(Color.BLUE);
-		rdbtnPasUrgent.setBounds(142, 130, 77, 23);
-		contentPane.add(rdbtnPasUrgent);
-		
-		JRadioButton rdbtnUrgent = new JRadioButton("Urgent");
-		rdbtnUrgent.setForeground(Color.ORANGE);
-		rdbtnUrgent.setBounds(221, 130, 60, 23);
-		contentPane.add(rdbtnUrgent);
-		
-		JRadioButton rdbtnTrsUrgent = new JRadioButton("Très urgent");
-		rdbtnTrsUrgent.setForeground(Color.RED);
-		rdbtnTrsUrgent.setBounds(283, 130, 90, 23);
-		contentPane.add(rdbtnTrsUrgent);
-		
-		JList lstTachesFini = new JList();
-		lstTachesFini.setBounds(461, 220, 400, 332);
-		contentPane.add(lstTachesFini);
-		
-		JButton btnSupprTachesFini = new JButton("Supprimer");
-		btnSupprTachesFini.setBounds(461, 563, 89, 23);
-		contentPane.add(btnSupprTachesFini);
-		
-		JButton btnViderTachesFini = new JButton("Vider");
-		btnViderTachesFini.setBounds(560, 563, 89, 23);
-		contentPane.add(btnViderTachesFini);
-		
 		JButton btnQuitter = new JButton("Quitter");
-		btnQuitter.setBounds(772, 563, 89, 23);
+		btnQuitter.setBounds(321, 563, 89, 23);
 		contentPane.add(btnQuitter);
 		
-		JButton btnAjouter = new JButton("Ajouter");
+		btnAjouter = new JButton("Ajouter");
+		btnAjouter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliqueBtnAjouter();
+			}
+		});
 		btnAjouter.setBounds(208, 160, 89, 23);
 		contentPane.add(btnAjouter);
 		
 		JLabel lblNewLabel_3 = new JLabel("MEMBRES");
 		lblNewLabel_3.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_3.setBounds(630, 11, 90, 14);
+		lblNewLabel_3.setBounds(449, 28, 90, 14);
 		contentPane.add(lblNewLabel_3);
 		
 		JLabel lblNom = new JLabel("Nom :");
-		lblNom.setBounds(461, 28, 46, 14);
+		lblNom.setBounds(407, 59, 46, 14);
 		contentPane.add(lblNom);
 		
 		JLabel lblNewLabel_6 = new JLabel("Prénom :");
-		lblNewLabel_6.setBounds(461, 59, 46, 14);
+		lblNewLabel_6.setBounds(407, 90, 46, 14);
 		contentPane.add(lblNewLabel_6);
 		
 		JLabel lblStatut = new JLabel("Statut :");
-		lblStatut.setBounds(461, 87, 46, 14);
+		lblStatut.setBounds(407, 123, 46, 14);
 		contentPane.add(lblStatut);
 		
 		txtNom = new JTextField();
 		txtNom.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtNom.setBounds(540, 28, 86, 20);
+		txtNom.setBounds(453, 56, 86, 20);
 		contentPane.add(txtNom);
 		txtNom.setColumns(10);
 		
 		txtPrenom = new JTextField();
 		txtPrenom.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtPrenom.setBounds(540, 56, 86, 20);
+		txtPrenom.setBounds(453, 87, 86, 20);
 		contentPane.add(txtPrenom);
 		txtPrenom.setColumns(10);
 		
 		txtStatut = new JTextField();
 		txtStatut.setHorizontalAlignment(SwingConstants.RIGHT);
-		txtStatut.setBounds(540, 84, 86, 20);
+		txtStatut.setBounds(453, 116, 86, 20);
 		contentPane.add(txtStatut);
 		txtStatut.setColumns(10);
 		
@@ -227,8 +270,12 @@ public class frmToDoList extends JFrame {
 				cliqueBtnNouveau();
 			}
 		});
-		btnCreer.setBounds(537, 125, 89, 23);
+		btnCreer.setBounds(453, 160, 89, 23);
 		contentPane.add(btnCreer);
+		
+		
+		
+		
 
 	}
 }

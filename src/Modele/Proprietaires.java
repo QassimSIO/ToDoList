@@ -17,6 +17,7 @@ public abstract class Proprietaires {
 	private String prenom;
 	private String statut;
 	private String leSort;
+	private String color;
 	
 	
 	public Proprietaires(String nom, String prenom, String statut) {
@@ -36,6 +37,8 @@ public abstract class Proprietaires {
 	public String toString() {
 		return nom + " "+ prenom ;
 	}
+	
+
 
 	public abstract String infoMessage(String prenom,String nom, String statut );
 
