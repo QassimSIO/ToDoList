@@ -112,7 +112,14 @@ public class frmToDoList extends JFrame {
 	}
 	
 	
+	/***
+	 * Clique sur le bouton Vider
+	 */
 	
+	public void CliqueBtnVider() {
+		controle.SupprimeLesTache();
+		majFormulaire();
+	}
 	
 	/***
 	 * Clique sur le bouton Modifier
@@ -307,10 +314,20 @@ public class frmToDoList extends JFrame {
 		contentPane.add(lblNewLabel_5);
 		
 		JButton btnViderTachesAFaire = new JButton("Vider");
+		btnViderTachesAFaire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				CliqueBtnVider();
+			}
+		});
 		btnViderTachesAFaire.setBounds(204, 563, 89, 23);
 		contentPane.add(btnViderTachesAFaire);
 		
 		JButton btnQuitter = new JButton("Quitter");
+		btnQuitter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
+			}
+		});
 		btnQuitter.setBounds(321, 563, 89, 23);
 		contentPane.add(btnQuitter);
 		

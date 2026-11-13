@@ -77,6 +77,13 @@ public class Controle {
 		frmToDoList.majlstTachesAFaire(lesTaches);
 		
 		
+	}
+	
+	//methode pour supprimer toutes les taches //
+	
+	public void SupprimeLesTache() {
+		lesTaches.clear();
+		frmToDoList.majlstTachesAFaire(lesTaches);
 		
 		
 	}
