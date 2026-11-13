@@ -24,6 +24,7 @@ import javax.swing.JSplitPane;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import javax.swing.JButton;
 import javax.swing.JRadioButton;
@@ -57,6 +58,7 @@ public class frmToDoList extends JFrame {
 	private DefaultListModel<Taches> modeleTachesAFaire = new DefaultListModel<>();
 	private JList<Taches> lstTachesAFaire;
 
+
 	
 	/*public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -70,6 +72,28 @@ public class frmToDoList extends JFrame {
 			}
 		});
 	}*/
+	
+	//methode pour afficher message d'erreur//
+	 public void afficherErreur(String message) {JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
+	};
+	
+	
+	
+	
+	public void cliqueBtnSuppr() 
+	{Taches choisie = lstTachesAFaire.getSelectedValue();//la tache selectionné//
+	if(choisie == null) {//si aucune tache n'est choisie//
+		 afficherErreur("Sélectionne une tâche à supprimer");
+	        return;
+	}
+	 int reponse = JOptionPane.showConfirmDialog(this,
+	            "Supprimer « " + choisie + " » ?", "Confirmation", JOptionPane.YES_NO_OPTION);
+	 
+	 if(reponse == JOptionPane.YES_OPTION) {
+		 controle.SupprimeUneTache(choisie);
+	 }
+	}
+	
 	
 	/***
 	 * Clique sur le bouton ajouter 
@@ -201,6 +225,11 @@ public class frmToDoList extends JFrame {
 		contentPane.add(scrollAFaire);
 		
 		JButton btnSupprTachesAFaire = new JButton("Supprimer");
+		btnSupprTachesAFaire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 cliqueBtnSuppr() ;
+			}
+		});
 		btnSupprTachesAFaire.setBounds(10, 563, 89, 23);
 		contentPane.add(btnSupprTachesAFaire);
 		

@@ -68,5 +68,15 @@ public class Controle {
 		frmToDoList.majlstTachesAFaire(lesTaches);
 	}
 	
+	
+	//methode pour supprimer une tache //
+	
+	public void SupprimeUneTache(Taches laTache) {
+		lesTaches.remove(laTache);
+		frmToDoList.majlstTachesAFaire(lesTaches);
+		
+		
+	}
+	
 
 	}
