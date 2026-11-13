@@ -73,13 +73,69 @@ public class frmToDoList extends JFrame {
 		});
 	}*/
 	
+	
+	//mise a jours formulaire //
+	
+	public void majFormulaire() {
+		txtTitre.setText("");
+		 cbbProprietaire.setSelectedItem(null);
+		 txtDateExpiration.setText("");
+		 cbbUrgence.setSelectedItem(null);
+	}
+	
 	//methode pour afficher message d'erreur//
 	 public void afficherErreur(String message) {JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
 	};
 	
 	
+	 public void afficherTache(Taches t){
+		 txtTitre.setText(t.getTitre());
+		 cbbProprietaire.setSelectedItem(t.getProprietaire());
+		 txtDateExpiration.setText(t.getDateExpiration());
+		 cbbUrgence.setSelectedItem(t.getUrgence());
+	 };
 	
 	
+	/***
+	 * Clique sur une tache
+	 */
+	public void CliqueSurTache() {
+		lstTachesAFaire.addListSelectionListener(e -> {
+		    if (e.getValueIsAdjusting()) {
+		        return;                                    // on ignore le premier des deux événements evennement sur un clique au lieu de 2
+		    }
+		    Taches choisie = lstTachesAFaire.getSelectedValue();
+		    if (choisie != null) {
+		    	 afficherTache(choisie);
+		    }
+		});
+	}
+	
+	
+	
+	
+	/***
+	 * Clique sur le bouton Modifier
+	 */
+	public void cliqueBtnModif() 
+	{Taches choisie = lstTachesAFaire.getSelectedValue();//la tache selectionné//
+	if(choisie == null) {//si aucune tache n'est choisie//
+		 afficherErreur("Sélectionne une tâche à modifier");
+	        return;
+	}
+	 int reponse = JOptionPane.showConfirmDialog(this,
+	            "Modifier « " + choisie + " » ?", "Confirmation", JOptionPane.YES_NO_OPTION);
+	 
+	 if(reponse == JOptionPane.YES_OPTION) {
+		 controle.ModifierUneTache(choisie);
+	 }
+	}
+	
+	
+	
+	/***
+	 * Clique sur le bouton Supprimer
+	 */
 	public void cliqueBtnSuppr() 
 	{Taches choisie = lstTachesAFaire.getSelectedValue();//la tache selectionné//
 	if(choisie == null) {//si aucune tache n'est choisie//
@@ -90,6 +146,7 @@ public class frmToDoList extends JFrame {
 	            "Supprimer « " + choisie + " » ?", "Confirmation", JOptionPane.YES_NO_OPTION);
 	 
 	 if(reponse == JOptionPane.YES_OPTION) {
+		
 		 controle.SupprimeUneTache(choisie);
 	 }
 	}
@@ -100,8 +157,7 @@ public class frmToDoList extends JFrame {
 	 */
 	public void cliqueBtnAjouter() {
 		controle.creeTaches(txtTitre.getText(),(Proprietaires)cbbProprietaire.getSelectedItem(), txtDateExpiration.getText(), (Urgence)cbbUrgence.getSelectedItem());
-		txtTitre.setText("");
-		txtDateExpiration.setText("");
+		majFormulaire();
 	}
 	
 	/**
@@ -302,6 +358,7 @@ public class frmToDoList extends JFrame {
 		btnCreer.setBounds(453, 160, 89, 23);
 		contentPane.add(btnCreer);
 		
+		CliqueSurTache();
 		
 		
 		

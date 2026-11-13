@@ -37,4 +37,31 @@ public class Taches {
 	 public LocalDate getDatePublication() {
 	        return datePublication;
 	    }
+	 
+	 public void SetTitre(String leTitre) {
+		  this.titre = leTitre;
+	 }
+	 
+	 public String getTitre() {
+		 return this.titre;
+	 }
+	 
+	 public void SetDateExpiration(String laDateExpiration) {
+		  this.dateExpiration = laDateExpiration;
+	 }
+	 public String getDateExpiration() {
+		 return this.dateExpiration;
+	 }
+	 
+	 public Urgence getUrgence() {
+		 return this.urgence;
+	 }
+	 
+	 public Proprietaires getProprietaire() {
+		return this.proprietaire;
+	 }
+	 
 }
+
+
+
