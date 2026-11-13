@@ -74,14 +74,14 @@ public class frmToDoList extends JFrame {
 	}*/
 	
 	
-	//mise a jours formulaire //
-	
+	//methode mise a jours formulaire //
 	public void majFormulaire() {
 		txtTitre.setText("");
 		 cbbProprietaire.setSelectedItem(null);
 		 txtDateExpiration.setText("");
 		 cbbUrgence.setSelectedItem(null);
 	}
+	
 	
 	//methode pour afficher message d'erreur//
 	 public void afficherErreur(String message) {JOptionPane.showMessageDialog(this, message, "Information", JOptionPane.INFORMATION_MESSAGE);
@@ -123,11 +123,15 @@ public class frmToDoList extends JFrame {
 		 afficherErreur("Sélectionne une tâche à modifier");
 	        return;
 	}
+	
 	 int reponse = JOptionPane.showConfirmDialog(this,
 	            "Modifier « " + choisie + " » ?", "Confirmation", JOptionPane.YES_NO_OPTION);
 	 
 	 if(reponse == JOptionPane.YES_OPTION) {
-		 controle.ModifierUneTache(choisie);
+		 controle.SupprimeUneTache(choisie);
+		 controle.creeTaches(txtTitre.getText(),(Proprietaires)cbbProprietaire.getSelectedItem(), txtDateExpiration.getText(), (Urgence)cbbUrgence.getSelectedItem());
+			
+		 
 	 }
 	}
 	
@@ -290,6 +294,11 @@ public class frmToDoList extends JFrame {
 		contentPane.add(btnSupprTachesAFaire);
 		
 		JButton btnModifTachesAFaire = new JButton("Modifier");
+		btnModifTachesAFaire.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cliqueBtnModif();
+			}
+		});
 		btnModifTachesAFaire.setBounds(105, 563, 89, 23);
 		contentPane.add(btnModifTachesAFaire);
 		

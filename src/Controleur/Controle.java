@@ -65,6 +65,7 @@ public class Controle {
 		Taches uneTache;
 		uneTache = new Taches(titre,proprietaire,dateExpiration,u);
 		lesTaches.add(uneTache);
+		frmToDoList.majFormulaire();
 		frmToDoList.majlstTachesAFaire(lesTaches);
 	}
 	
@@ -73,18 +74,13 @@ public class Controle {
 	
 	public void SupprimeUneTache(Taches laTache) {
 		lesTaches.remove(laTache);
-		frmToDoList.majFormulaire();
 		frmToDoList.majlstTachesAFaire(lesTaches);
+		
+		
 		
 		
 	}
 	
-	//methode pour modifier une tache //
-	
-	public void ModifierUneTache(Taches laTache) {
-		lesTaches.remove(laTache);
-		frmToDoList.majlstTachesAFaire(lesTaches);
-		
-	}
+
 
 	}
